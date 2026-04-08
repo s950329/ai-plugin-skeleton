@@ -1,0 +1,17 @@
+{
+  "name": "ai-plugin-skeleton",
+  "owner": {
+    "name": "your-org",
+    "email": "dev@example.com"
+  },
+  "plugins": [
+    {
+      "name": "common-tools",
+      "description": "Common workflow tools for all roles.",
+      "version": "1.0.0",
+      "source": "./plugins/common-tools",
+      "category": "productivity",
+      "tags": ["skill", "creator", "evaluation"]
+    }
+  ]
+}
