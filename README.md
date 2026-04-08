@@ -3,7 +3,7 @@
 This repo can be used to scaffold an AI skill plugin marketplace. Follow these steps to get started:
 
 1. Press the **"Use this template"** button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Tell your AI agent to customize the skeleton by pasting: `Customize this plugin skeleton for my project by following the guide in: @docs/get-started.md`
+2. Tell your AI agent to customize the skeleton by pasting: `Customize this plugin skeleton for my project by following the guide in: @docs/get-started-for-agent.md`
 3. Or follow the [Get Started](./docs/get-started.md) guide manually to replace all placeholders throughout the files.
 4. Have fun creating your plugins.
 
