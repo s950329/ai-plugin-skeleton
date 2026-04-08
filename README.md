@@ -1,23 +1,11 @@
 # ai-plugin-skeleton — Plugin Marketplace
 
-An AI skill plugin skeleton that supports cross-tool Plugin Marketplace for both Claude Code and GitHub Copilot CLI.
+This repo can be used to scaffold an AI skill plugin marketplace. Follow these steps to get started:
 
-## Getting Started
-
-### For Agents
-
-Copy and paste this prompt to your LLM agent (Claude Code, AmpCode, Cursor, etc.):
-
-```
-Customize this plugin skeleton for my project by following the guide in:
-@docs/get-started.md
-```
-
-The agent will walk through each file that needs to be changed and update them for your project.
-
-### For Humans
-
-See [Get Started](./docs/get-started.md) for the full checklist of files to modify, with before/after examples.
+1. Press the **"Use this template"** button at the top of this repo to create a new repo with the contents of this skeleton.
+2. Tell your AI agent to customize the skeleton by pasting: `Customize this plugin skeleton for my project by following the guide in: @docs/get-started.md`
+3. Or follow the [Get Started](./docs/get-started.md) guide manually to replace all placeholders throughout the files.
+4. Have fun creating your plugins.
 
 ---
 
