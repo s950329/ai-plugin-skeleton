@@ -1,0 +1,121 @@
+name: Auto Release
+
+on:
+  push:
+    branches: [main]
+    paths: ['plugins/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate version tag
+        id: version
+        run: |
+          DATE=$(date -u +"%Y.%m.%d")
+          EXISTING=$(git tag -l "v${DATE}-*" | wc -l | tr -d ' ')
+          SEQ=$((EXISTING + 1))
+          TAG="v${DATE}-${SEQ}"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "date=${DATE}" >> "$GITHUB_OUTPUT"
+          echo "Generated tag: ${TAG}"
+
+      - name: Package plugins
+        run: |
+          WORKDIR="$(pwd)"
+          mkdir -p "${WORKDIR}/dist"
+          TAG="${{ steps.version.outputs.tag }}"
+          for plugin_dir in "${WORKDIR}"/plugins/*/; do
+            plugin_name=$(basename "$plugin_dir")
+            skills_dir="${plugin_dir}skills"
+            if [ ! -d "$skills_dir" ]; then
+              echo "Skipping ${plugin_name} — no skills/ directory"
+              continue
+            fi
+
+            # Create a staging directory to collect .skill files
+            staging="${WORKDIR}/dist/staging-${plugin_name}"
+            mkdir -p "$staging"
+
+            # Package each skill as a .skill file (zip format)
+            for skill_dir in "${skills_dir}"/*/; do
+              skill_name=$(basename "$skill_dir")
+              skill_file="${staging}/${skill_name}.skill"
+              echo "  Packaging skill: ${plugin_name}/${skill_name} → ${skill_name}.skill"
+              cd "$skill_dir"
+              zip -r "$skill_file" . \
+                -x '*.git*' 'node_modules/*' '__pycache__/*' '*.DS_Store' '*.pyc'
+            done
+
+            # Bundle all .skill files into a single zip
+            zip_name="${plugin_name}-${TAG}.zip"
+            echo "Bundling ${plugin_name} → ${zip_name}"
+            cd "$staging"
+            zip -r "${WORKDIR}/dist/${zip_name}" *.skill
+            cd "${WORKDIR}"
+            rm -rf "$staging"
+          done
+          echo "=== dist/ contents ==="
+          ls -lh dist/
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+
+          # Get the previous release tag
+          PREV_TAG=$(git tag -l 'v*' --sort=-version:refname | head -n 1)
+
+          {
+            echo "## Downloads"
+            echo ""
+            echo "| File | Description |"
+            echo "|------|-------------|"
+            for f in dist/*.zip; do
+              fname=$(basename "$f")
+              plugin_name=$(echo "$fname" | sed "s/-${TAG}.zip//")
+              echo "| \`${fname}\` | ${plugin_name} plugin |"
+            done
+            echo ""
+            echo "> For installation instructions, see the [README](../../#claude-ai-web-installation-no-cli-required)"
+            echo ""
+            echo "## Changelog"
+            echo ""
+
+            if [ -n "$PREV_TAG" ] && git rev-parse "$PREV_TAG" >/dev/null 2>&1; then
+              echo "Changes since \`${PREV_TAG}\`:"
+              echo ""
+              git log "${PREV_TAG}..HEAD" --pretty=format:"- %s (%h)" -- plugins/ || echo "- No plugins/ changes"
+            else
+              echo "Initial release — plugins/ commits included:"
+              echo ""
+              git log --pretty=format:"- %s (%h)" -- plugins/ || echo "- No plugins/ commits"
+            fi
+          } > /tmp/release-notes.md
+
+          cat /tmp/release-notes.md
+
+      - name: Create tag and release
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+
+          gh release create "$TAG" dist/* \
+            --title "Release ${TAG}" \
+            --notes-file /tmp/release-notes.md
