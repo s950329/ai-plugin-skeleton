@@ -6,7 +6,7 @@ An AI skill plugin skeleton that supports cross-tool Plugin Marketplace for both
 
 | Plugin | Skills | Users |
 |--------|--------|-------|
-| `common-tools` | skill-creator | All roles |
+| `common-tools` | skill-creator, create-plugin | All roles |
 
 ## Directory Structure
 
@@ -84,6 +84,32 @@ If you don't use the CLI or VS Code, you can install skills directly into Claude
 | Command | Description |
 |---------|-------------|
 | `/common-tools:skill-creator` | Create, evaluate, and package skills |
+| `/common-tools:create-plugin` | Scaffold a new plugin and register it in the marketplace |
+
+## Creating a New Plugin
+
+### For Agents
+
+Copy and paste this prompt to your LLM agent (Claude Code, AmpCode, Cursor, etc.):
+
+```
+Create a new plugin in this repository by following the instructions in:
+@plugins/common-tools/skills/create-plugin/SKILL.md
+```
+
+The agent will ask you a few questions and then scaffold everything automatically.
+
+Or if the `common-tools` plugin is already installed, just type `/common-tools:create-plugin` in Claude Code or Copilot CLI.
+
+### For Humans
+
+```bash
+bash scripts/create-plugin.sh
+```
+
+The script walks you through the same questions interactively and produces the same result.
+
+---
 
 ## Updating Plugins
 
