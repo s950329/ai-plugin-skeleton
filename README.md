@@ -130,4 +130,5 @@ claude plugin update common-tools@your-repo
 
 > For directory structure details, see [AGENTS.md](./AGENTS.md#2-directory-structure).<br>
 > Want to contribute? Read [CONTRIBUTING.md](./CONTRIBUTING.md).<br>
-> AI coding agents maintaining this repo should refer to [AGENTS.md](./AGENTS.md).
+> AI coding agents maintaining this repo should refer to [AGENTS.md](./AGENTS.md).<br>
+> Template developers: [Get Started](./docs/get-started.md) · [Plugin Design Guide](./docs/plugin-design-guide.md) · [Troubleshooting](./docs/troubleshooting.md) · [References](./docs/references.md)

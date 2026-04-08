@@ -158,7 +158,15 @@ Copyright (c) 2026 Your Name or Organization
 ## Suggested Order
 
 1. Update `marketplace.json`
-3. Update `scripts/install.sh`
-4. Update `README.md` and `AGENTS.md`
-5. Update `LICENSE`
-6. Commit and push
+2. Update `scripts/install.sh`
+3. Update `README.md` and `AGENTS.md`
+4. Update `LICENSE`
+5. Commit and push
+
+---
+
+## Further Reading
+
+- [Plugin Design Guide](./plugin-design-guide.md) — how to organize plugins, write SKILL.md, and avoid common pitfalls
+- [Troubleshooting](./troubleshooting.md) — common errors and their solutions
+- [References](./references.md) — official docs, community resources, and ecosystem observations
