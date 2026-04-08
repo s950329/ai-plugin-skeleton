@@ -2,25 +2,24 @@
 
 An AI skill plugin skeleton that supports cross-tool Plugin Marketplace for both Claude Code and GitHub Copilot CLI.
 
-## Plugin Overview
+## Getting Started
 
-| Plugin | Skills | Users |
-|--------|--------|-------|
-| `common-tools` | skill-creator, create-plugin | All roles |
+### For Agents
 
-## Directory Structure
-
-> See [AGENTS.md](./AGENTS.md#2-directory-structure) for the full structure.
+Copy and paste this prompt to your LLM agent (Claude Code, AmpCode, Cursor, etc.):
 
 ```
-ai-plugin-skeleton/
-├── plugins/
-│   └── common-tools/       ← example plugin
-├── scripts/                ← install script
-├── AGENTS.md               ← AI agent instructions
-├── CONTRIBUTING.md         ← contributor guide for humans
-└── README.md
+Customize this plugin skeleton for my project by following the guide in:
+@docs/get-started.md
 ```
+
+The agent will walk through each file that needs to be changed and update them for your project.
+
+### For Humans
+
+See [Get Started](./docs/get-started.md) for the full checklist of files to modify, with before/after examples.
+
+---
 
 ## Quick Install
 
